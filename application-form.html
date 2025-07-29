@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .job-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .form-section h3 {
+            color: #3498db;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        input[type="file"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .col {
+            flex: 1;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .payment-section {
+            background-color: #e8f5e8;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+            margin-bottom: 20px;
+        }
+        
+        .payment-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .payment-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #229954;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .back-btn::before {
+            content: "← ";
+            margin-right: 5px;
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .progress-step.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .form-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="javascript:history.back()" class="back-btn">Back to Job Details</a>
+        
+        <div class="header">
+            <h1>Job Application Form</h1>
+            <p>Complete your application for the selected position</p>
+        </div>
+        
+        <div class="job-info">
+            <h3 id="job-title">Job Title</h3>
+            <p id="job-department">Department</p>
+            <p><strong>Application Fee:</strong> <span id="application-fee">Rs. 0</span></p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-step active" id="step1">1. Personal Details</div>
+            <div class="progress-step" id="step2">2. Educational Details</div>
+            <div class="progress-step" id="step3">3. Documents</div>
+            <div class="progress-step" id="step4">4. Payment</div>
+        </div>
+        
+        <form id="applicationForm">
+            <!-- Step 1: Personal Details -->
+            <div class="form-section" id="personal-details">
+                <h3>Personal Details</h3>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="firstName">First Name <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="lastName">Last Name <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="dob">Date of Birth <span class="required">*</span></label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="gender">Gender <span class="required">*</span></label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address <span class="required">*</span></label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="city">City <span class="required">*</span></label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="state">State <span class="required">*</span></label>
+                            <select id="state" name="state" required>
+                                <option value="">Select State</option>
+                                <option value="andhra-pradesh">Andhra Pradesh</option>
+                                <option value="arunachal-pradesh">Arunachal Pradesh</option>
+                                <option value="assam">Assam</option>
+                                <option value="bihar">Bihar</option>
+                                <option value="chhattisgarh">Chhattisgarh</option>
+                                <option value="goa">Goa</option>
+                                <option value="gujarat">Gujarat</option>
+                                <option value="haryana">Haryana</option>
+                                <option value="himachal-pradesh">Himachal Pradesh</option>
+                                <option value="jharkhand">Jharkhand</option>
+                                <option value="karnataka">Karnataka</option>
+                                <option value="kerala">Kerala</option>
+                                <option value="madhya-pradesh">Madhya Pradesh</option>
+                                <option value="maharashtra">Maharashtra</option>
+                                <option value="manipur">Manipur</option>
+                                <option value="meghalaya">Meghalaya</option>
+                                <option value="mizoram">Mizoram</option>
+                                <option value="nagaland">Nagaland</option>
+                                <option value="odisha">Odisha</option>
+                                <option value="punjab">Punjab</option>
+                                <option value="rajasthan">Rajasthan</option>
+                                <option value="sikkim">Sikkim</option>
+                                <option value="tamil-nadu">Tamil Nadu</option>
+                                <option value="telangana">Telangana</option>
+                                <option value="tripura">Tripura</option>
+                                <option value="uttar-pradesh">Uttar Pradesh</option>
+                                <option value="uttarakhand">Uttarakhand</option>
+                                <option value="west-bengal">West Bengal</option>
+                                <option value="delhi">Delhi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pincode">Pincode <span class="required">*</span></label>
+                    <input type="text" id="pincode" name="pincode" required>
+                </div>
+            </div>
+            
+            <!-- Step 2: Educational Details -->
+            <div class="form-section" id="educational-details" style="display: none;">
+                <h3>Educational Details</h3>
+                
+                <div class="form-group">
+                    <label for="qualification">Highest Qualification <span class="required">*</span></label>
+                    <select id="qualification" name="qualification" required>
+                        <option value="">Select Qualification</option>
+                        <option value="10th">10th Pass</option>
+                        <option value="12th">12th Pass</option>
+                        <option value="diploma">Diploma</option>
+                        <option value="bachelor">Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="phd">PhD</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="board">Board/University <span class="required">*</span></label>
+                    <input type="text" id="board" name="board" required>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="passingYear">Year of Passing <span class="required">*</span></label>
+                            <input type="text" id="passingYear" name="passingYear" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="percentage">Percentage/CGPA <span class="required">*</span></label>
+                            <input type="text" id="percentage" name="percentage" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="specialization">Specialization (if any)</label>
+                    <input type="text" id="specialization" name="specialization">
+                </div>
+            </div>
+            
+            <!-- Step 3: Documents -->
+            <div class="form-section" id="documents" style="display: none;">
+                <h3>Document Upload</h3>
+                
+                <div class="form-group">
+                    <label for="photo">Passport Size Photo <span class="required">*</span></label>
+                    <input type="file" id="photo" name="photo" accept="image/*" required>
+                    <small>Upload recent passport size photo (JPG/PNG, max 2MB)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signature">Signature <span class="required">*</span></label>
+                    <input type="file" id="signature" name="signature" accept="image/*" required>
+                    <small>Upload your signature (JPG/PNG, max 1MB)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="certificate">Educational Certificate <span class="required">*</span></label>
+                    <input type="file" id="certificate" name="certificate" accept=".pdf,.jpg,.jpeg,.png" required>
+                    <small>Upload your highest qualification certificate (PDF/JPG/PNG, max 5MB)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="idProofType">ID Proof <span class="required">*</span></label>
+                    <select id="idProofType" name="idProofType" required>
+                        <option value="">Select ID Proof Type</option>
+                        <option value="aadhar">Aadhar Card</option>
+                        <option value="pan">PAN Card</option>
+                        <option value="voter">Voter ID</option>
+                        <option value="driving">Driving License</option>
+                        <option value="passport">Passport</option>
+                    </select>
+                    <input type="file" id="idProof" name="idProof" accept=".pdf,.jpg,.jpeg,.png" required style="margin-top: 10px;">
+                    <small>Upload your ID proof document (PDF/JPG/PNG, max 5MB)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="casteCertificate">Caste Certificate (if applicable)</label>
+                    <input type="file" id="casteCertificate" name="casteCertificate" accept=".pdf,.jpg,.jpeg,.png">
+                    <small>Upload caste certificate if applicable (PDF/JPG/PNG, max 5MB)</small>
+                </div>
+            </div>
+            
+            <!-- Step 4: Payment -->
+            <div class="form-section" id="payment" style="display: none;">
+                <h3>Payment Details</h3>
+                
+                <div class="payment-section">
+                    <div class="payment-info">
+                        <span>Application Fee:</span>
+                        <span class="payment-amount" id="payment-amount">Rs. 0</span>
+                    </div>
+                    <p><strong>Payment Methods Available:</strong></p>
+                    <ul>
+                        <li>Credit Card / Debit Card</li>
+                        <li>Net Banking</li>
+                        <li>UPI Payment</li>
+                        <li>Digital Wallets</li>
+                    </ul>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paymentMethod">Select Payment Method <span class="required">*</span></label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="">Select Payment Method</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="netbanking">Net Banking</option>
+                        <option value="upi">UPI</option>
+                        <option value="wallet">Digital Wallet</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="terms" name="terms" required>
+                        I agree to the <a href="#" style="color: #3498db;">Terms and Conditions</a> and <a href="#" style="color: #3498db;">Privacy Policy</a> <span class="required">*</span>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="declaration" name="declaration" required>
+                        I declare that all the information provided is true and correct to the best of my knowledge <span class="required">*</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-navigation">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">Previous</button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">Next</button>
+                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">Pay & Submit Application</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        // Get job details from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const jobTitle = urlParams.get('job') || 'Selected Job';
+        const jobDepartment = urlParams.get('dept') || 'Department';
+        const applicationFee = urlParams.get('fee') || 'Rs. 500';
+        
+        // Update job info
+        document.getElementById('job-title').textContent = jobTitle;
+        document.getElementById('job-department').textContent = jobDepartment;
+        document.getElementById('application-fee').textContent = applicationFee;
+        document.getElementById('payment-amount').textContent = applicationFee;
+        
+        function showStep(step) {
+            // Hide all sections
+            document.getElementById('personal-details').style.display = 'none';
+            document.getElementById('educational-details').style.display = 'none';
+            document.getElementById('documents').style.display = 'none';
+            document.getElementById('payment').style.display = 'none';
+            
+            // Show current section
+            switch(step) {
+                case 1:
+                    document.getElementById('personal-details').style.display = 'block';
+                    break;
+                case 2:
+                    document.getElementById('educational-details').style.display = 'block';
+                    break;
+                case 3:
+                    document.getElementById('documents').style.display = 'block';
+                    break;
+                case 4:
+                    document.getElementById('payment').style.display = 'block';
+                    break;
+            }
+            
+            // Update progress bar
+            for(let i = 1; i <= totalSteps; i++) {
+                const stepElement = document.getElementById(`step${i}`);
+                if(i < step) {
+                    stepElement.className = 'progress-step completed';
+                } else if(i === step) {
+                    stepElement.className = 'progress-step active';
+                } else {
+                    stepElement.className = 'progress-step';
+                }
+            }
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if(step === 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-block';
+                submitBtn.style.display = 'none';
+            } else if(step === totalSteps) {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+            } else {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'inline-block';
+                submitBtn.style.display = 'none';
+            }
+        }
+        
+        function nextStep() {
+            if(validateCurrentStep()) {
+                if(currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+        }
+        
+        function previousStep() {
+            if(currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+        
+        function validateCurrentStep() {
+            const currentSection = document.querySelector(`#personal-details, #educational-details, #documents, #payment`);
+            const requiredFields = currentSection.querySelectorAll('[required]');
+            
+            for(let field of requiredFields) {
+                if(!field.value.trim()) {
+                    alert('Please fill all required fields marked with *');
+                    field.focus();
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Form submission
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if(validateCurrentStep()) {
+                // Show payment processing
+                alert('Redirecting to payment gateway...\n\nNote: This is a demo application. In a real scenario, you would be redirected to a secure payment gateway.');
+                
+                // Simulate payment processing
+                setTimeout(() => {
+                    alert('Payment successful! Your application has been submitted.\n\nApplication ID: APP' + Math.random().toString(36).substr(2, 9).toUpperCase());
+                    window.location.href = 'jobs.html';
+                }, 2000);
+            }
+        });
+        
+        // Initialize first step
+        showStep(1);
+    </script>
+</body>
+</html> 
