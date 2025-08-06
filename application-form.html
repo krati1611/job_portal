@@ -203,6 +203,16 @@
             margin-top: 30px;
         }
         
+        .error-field {
+            border: 1px solid #e74c3c !important;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+        
         @media (max-width: 768px) {
             .row {
                 flex-direction: column;
@@ -445,11 +455,9 @@
                         <span class="payment-amount" id="payment-amount">Rs. 0</span>
                     </div>
                     <p><strong>Payment Methods Available:</strong></p>
+                    <p>Note: We are currently accepting only UPI payments. Sorry for the inconvenience.</p>
                     <ul>
-                        <li>Credit Card / Debit Card</li>
-                        <li>Net Banking</li>
                         <li>UPI Payment</li>
-                        <li>Digital Wallets</li>
                     </ul>
                 </div>
                 
@@ -457,11 +465,15 @@
                     <label for="paymentMethod">Select Payment Method <span class="required">*</span></label>
                     <select id="paymentMethod" name="paymentMethod" required>
                         <option value="">Select Payment Method</option>
-                        <option value="card">Credit/Debit Card</option>
-                        <option value="netbanking">Net Banking</option>
                         <option value="upi">UPI</option>
-                        <option value="wallet">Digital Wallet</option>
                     </select>
+                </div>
+                
+                <div id="upi-qr-code" style="display: none; text-align: center; margin-top: 20px; padding: 20px; border: 1px dashed #ccc; border-radius: 5px; background-color: #fafafa;">
+                    <h4>Pay using UPI QR Code</h4>
+                    <img src="scanner.jpeg" alt="Pay using UPI" style="max-width: 250px; height: auto; margin-bottom: 15px; border: 1px solid #eee;">
+                    <p><strong>Scan the QR code with your UPI app to pay the application fee.</strong></p>
+                    <p>After successful payment, click the "Pay & Submit Application" button below to complete your application. Do not refresh the page.</p>
                 </div>
                 
                 <div class="form-group">
@@ -503,7 +515,16 @@
         document.getElementById('application-fee').textContent = applicationFee;
         document.getElementById('payment-amount').textContent = applicationFee;
         
+        function clearErrors() {
+            const errorFields = document.querySelectorAll('.error-field');
+            errorFields.forEach(field => field.classList.remove('error-field'));
+
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(msg => msg.remove());
+        }
+
         function showStep(step) {
+            clearErrors();
             // Hide all sections
             document.getElementById('personal-details').style.display = 'none';
             document.getElementById('educational-details').style.display = 'none';
@@ -575,31 +596,76 @@
         }
         
         function validateCurrentStep() {
-            const currentSection = document.querySelector(`#personal-details, #educational-details, #documents, #payment`);
+            clearErrors();
+            let sectionId;
+            switch(currentStep) {
+                case 1: sectionId = 'personal-details'; break;
+                case 2: sectionId = 'educational-details'; break;
+                case 3: sectionId = 'documents'; break;
+                case 4: sectionId = 'payment'; break;
+            }
+            const currentSection = document.getElementById(sectionId);
+            if (!currentSection) return false;
+
             const requiredFields = currentSection.querySelectorAll('[required]');
-            
-            for(let field of requiredFields) {
-                if(!field.value.trim()) {
-                    alert('Please fill all required fields marked with *');
-                    field.focus();
-                    return false;
+            let firstErrorField = null;
+
+            for(const field of requiredFields) {
+                let isValid = true;
+                let customErrorMessage = 'This field is required.';
+
+                if (field.type === 'checkbox') {
+                    if (!field.checked) {
+                        isValid = false;
+                        customErrorMessage = 'Please check this box to continue.';
+                    }
+                } else if (!field.value.trim()) {
+                    isValid = false;
+                } else if (field.id === 'email' && !field.value.includes('@')) {
+                    isValid = false;
+                    customErrorMessage = 'Please enter a valid email address containing "@".';
                 }
+
+                if (!isValid) {
+                    if (!firstErrorField) firstErrorField = field;
+                    field.classList.add('error-field');
+                    
+                    const errorMessage = document.createElement('span');
+                    errorMessage.className = 'error-message';
+                    errorMessage.textContent = customErrorMessage;
+
+                    if (field.type === 'checkbox') {
+                        field.parentElement.insertAdjacentElement('afterend', errorMessage);
+                    } else {
+                        field.insertAdjacentElement('afterend', errorMessage);
+                    }
+                }
+            }
+
+            if(firstErrorField) {
+                firstErrorField.focus();
+                return false;
             }
             
             return true;
         }
         
+        document.getElementById('paymentMethod').addEventListener('change', function() {
+            const upiQrCodeDiv = document.getElementById('upi-qr-code');
+            if (this.value === 'upi') {
+                upiQrCodeDiv.style.display = 'block';
+            } else {
+                upiQrCodeDiv.style.display = 'none';
+            }
+        });
+
         // Form submission
         document.getElementById('applicationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             if(validateCurrentStep()) {
-                // Show payment processing
-                alert('Redirecting to payment gateway...\n\nNote: This is a demo application. In a real scenario, you would be redirected to a secure payment gateway.');
-                
-                // Simulate payment processing
                 setTimeout(() => {
-                    alert('Payment successful! Your application has been submitted.\n\nApplication ID: APP' + Math.random().toString(36).substr(2, 9).toUpperCase());
+                    alert('Payment successful! Your application has been submitted.\\n\\nApplication ID: APP' + Math.random().toString(36).substr(2, 9).toUpperCase());
                     window.location.href = 'jobs.html';
                 }, 2000);
             }
